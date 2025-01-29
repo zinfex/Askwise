@@ -15,8 +15,6 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-
-
         setPesquisas([
           {
               "id": 57,

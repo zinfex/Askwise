@@ -31,7 +31,6 @@ margin-bottom: 20px;
 .boxlogin {
     background-color: #fff;
     padding: 40px;
-    width: 100%;
     border-radius: 20px;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
 }
@@ -92,7 +91,6 @@ margin-bottom: 20px;
 }
 
 #demobtn {
-    margin-top: 30px;
     width: 100%;
     transition: 200ms ease-in-out;
 }
@@ -102,6 +100,11 @@ margin-bottom: 20px;
     border-color: #0D6EFD;
 }
 
-.nomes #nome {
-    width: 150px;
+.nomes {
+    width: 100%;
 }
+
+.nomes input {
+    width: 50%;
+}
+
