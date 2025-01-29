@@ -1,0 +1,50 @@
+@media (max-width: 1000px) {
+    .form {
+        padding-inline: 10px;
+    }
+
+    .dashboard-admin {
+        flex-direction: column;
+    }
+
+    .pesquisas, .perguntas {
+        width: 85%;
+        
+    }
+
+    .progress-dots {
+        display: none;
+    }
+
+    .container {  
+        overflow: visible;
+    }
+
+    .question-container {
+        z-index: 2;
+    }
+    
+    .options-container {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .end-group {
+        font-size: 10vw;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .end-text {
+        text-align: center;
+        font-size: 20px;
+    }
+}
+
+/* @media (min-width: 1000) {
+    .form {
+        max-width: 505px;
+    }
+} */

@@ -1,0 +1,157 @@
+.admin {
+  gap: 40px;
+  flex-direction: column;
+}
+
+.container-admin {
+  height: 80vh;
+  overflow: visible;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0;
+}
+  
+.titulo-admin {
+  border: none;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  color: #2A61BB;
+  font-size: 24px;
+  outline: 0;
+  width: 100%;
+}
+
+.dashboard-admin {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infocreate {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  align-items: start;
+  margin-top:15vh;
+}
+
+.pesquisas {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  height: fit-content;
+  gap: 10px;
+  width: 90%;  
+  margin-bottom: 50px;
+}
+.pesquisa {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 10px;
+  transition: 100ms ease-in-out;
+  cursor: pointer;
+  min-height: 69px;
+}
+.pesquisa:hover {
+  background-color: #e9ecefb6;
+}
+
+.iconbuttons {
+  color: #0D6EFD;
+  display: flex;
+  gap: 20px;
+  opacity: 0;
+  align-items: center;
+  justify-content: center;
+  transition: 100ms ease-in-out;
+}
+
+.pesquisa:hover .iconbuttons {
+  opacity: 1;
+}
+
+
+  /* Sidebar.css */
+.sidebar {
+  position: fixed;
+  display: flex;
+  width: fit-content;
+  min-width: 230px;
+  left: 0;
+  background-color: #f3f3f300;
+  overflow: auto;
+  font-size: 15px;
+  height: 100vh;
+  padding: 5px;
+  font-weight: 500;
+  border-right: 1px solid rgb(226, 226, 226);
+  flex-direction: column;
+}
+
+.sidebar .nav-link {
+  width: 100%;
+  margin-bottom: 0px;
+  display: flex;
+  padding-block: 7px;
+  align-items: center;
+  gap: 10px;
+  color: #5b5b5b;
+  letter-spacing: -0.5px;
+  border-radius: 10px;
+  transition: 0s;
+}
+
+.sidebar .nav-item {
+  width: 215px;
+} 
+
+.sidebar .nav-link:hover {
+  background-color: #e9ecefc7;
+  color: #065D93;
+}
+
+
+.sidebaritems {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.btn-link {
+  z-index: 2;
+}
+
+img.sideloog {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.sidecreate {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 3px;
+  gap: 5px;
+  padding-left: 30px;
+  color: #5b5b5b;
+  margin-bottom: 15px;
+}
+
+.sidecreate:hover {
+  color: #065D93;
+}
+
+.addside {
+  color: #065D93;
+  font-size: 17px;
+  margin-left: 5px;
+}

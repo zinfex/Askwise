@@ -1,0 +1,162 @@
+.infosummary {
+    margin-top: 80px;
+    padding: 30px;
+}
+
+.infosummary .titulo {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.buttonsummary {
+    display: flex;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+.buttonsummary button {
+    font-size: 15px;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.594);
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+}
+.buttonsummary button:hover, .buttonsummary button.active {
+    color: black;
+    border-color: black;
+}
+
+.share {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50vw;
+    margin-top: 40px;
+}
+
+.share input {
+    width: 400px;
+    padding: 10px;
+    border-radius: 10px;   
+    border: 1px solid rgb(150, 150, 150);
+    box-shadow: rgba(0, 0, 0, 0.063) 0px 5px 15px 0px;
+}
+
+.share h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: -5px;
+}
+
+
+.respostas-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.respostas-table th,
+.respostas-table td {
+    border: 1px solid #d3d3d3a8;
+    padding: 12px;
+    text-align: left;
+}
+
+.respostas-table th {
+    border: none;
+    color: rgba(20, 70, 146, 0.685);
+    font-weight: 500;
+
+}
+
+.respostas-table button {
+    background-color: transparent;
+    border: none;
+    color: rgba(5, 59, 141, 0.906);
+}
+
+.respostas-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+.respostas-table td .lixeira {
+    opacity: 0;
+}
+
+.respostas-table tr:hover .lixeira {
+    opacity: 1;
+}
+
+.resp {
+    font-weight: 600;
+    color: rgb(51, 126, 217);
+}
+
+.charts {
+    width: 100%;
+}
+
+
+
+.question-title {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.quantbox {
+    background-color: rgba(44, 138, 215, 0.853);
+    width: fit-content;
+    padding: 5px;
+    margin-right: 15px;
+    color: white;
+    border-radius: 3px;
+}
+
+div.accordion-body {
+    padding: 0;
+}
+
+.accordion-button:focus {
+    box-shadow: var(#f1f1f1);
+}
+
+.no-answers {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    padding: 20px;
+  }
+  
+tr.tituloperguntas th {
+    font-weight: 400;
+    font-size: 15px;
+    text-align: left;
+    color: #555555f6;
+}
+
+.respostas {
+    font-size: 14px;
+}
+
+.buttonssubm {
+    color: #555;
+    display: flex;
+    gap: 10px;
+    padding-inline: 15px;
+    opacity: 0;
+}
+
+.buttonssubm button {
+    border: none;
+    color: #555555c4;
+    background-color: transparent;
+}
+  
+.respostas:hover .buttonssubm {
+    opacity: 1;
+}

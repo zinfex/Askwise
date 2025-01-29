@@ -1,0 +1,14 @@
+.none {
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.none span {
+    font-size: 30px;
+    font-weight: 600;
+}

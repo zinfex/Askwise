@@ -1,0 +1,315 @@
+header {
+    background-color: white;
+    position: fixed;
+    width: 80%;
+    top: 0;
+    margin: 0px;
+    padding: 10px;
+    right: 0; 
+}
+
+.design {
+    display: flex;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.722);
+    padding: 5px;
+    border-radius: 5px;
+    align-items: center;
+    font-size: 20px;
+    width: fit-content;
+}
+
+.infoedit {
+    /* background-color: black; */
+    padding: 140px;
+    font-size: 35px;
+    display: flex;
+    flex-direction: column;
+}
+
+.infoedit input {
+    color: rgba(0, 0, 0, 0.736);
+    font-weight: 700;
+    border: 0px;
+    outline: none;
+}
+
+.questions {
+    font-size: 20px;
+    color: rgb(94, 94, 94);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.custom-radio {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-radio-item {
+    color: rgba(0, 0, 0, 0.832);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+    gap: 8px;
+}
+
+.custom-radio-item:hover {
+    background-color: #f0f0f0;
+}
+
+.custom-radio-item.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.descricao {
+    width: 100%;
+    opacity: 0; /* Opacidade padrão */
+    transition: opacity 100ms ease-in-out;
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.722);
+    cursor: pointer;
+}
+
+.descricao::placeholder {
+    opacity: 1;
+}
+
+.descricao:hover {
+    opacity: 1; /* Opacidade ao passar o mouse */
+}
+
+.descricao:focus, /* Opacidade quando o input está em foco */
+.descricao:not(:placeholder-shown) {
+    opacity: 1; /* Opacidade quando o input tem texto */
+}
+
+.novapergunta {
+    background: none;
+    opacity: 0;
+    padding: 10px;
+    color: rgb(95, 95, 95);
+    display: 'flex';
+    padding-left: 0px;
+    align-items: center;
+    font-size: 16px;
+    border: none;
+    text-align: start;
+}
+
+
+.novapergunta:hover {
+    opacity: 1;
+}
+
+.custom-radio {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-radio-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.custom-radio-item:hover, .custom-radio-item.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+input.boxinput {
+    border: 1px solid rgb(109, 109, 109);
+    font-size: 18px;
+    color: #0000003c;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0.0750em 0.0750em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.2em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+  
+input.boxinput::placeholder, textarea::placeholder {
+    color: #00000031;
+}
+
+.box {
+    border: 1px solid black;
+}
+
+input.boxradio, input.unicaescolha {
+    border-radius: 13px;
+    width: 500px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000000d0;
+    /* border: 1px solid rgb(109, 109, 109); */
+    /* box-shadow: rgba(0, 0, 0, 0) 0px 0.0750em 0.0750em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.2em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset; */
+    padding: 5px;
+}
+
+input.unicaescolha {
+    border: 1px solid rgb(109, 109, 109);
+    box-shadow: rgba(0, 0, 0, 0) 0px 0.0750em 0.0750em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.2em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+
+.question-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.delete-icon {
+    position: absolute;
+    left: -40px;
+    /* top: 50%; */
+    top: 12px;
+    border-right: 2px solid rgba(0, 0, 0, 0.357);
+    transform: translateY(-50%);
+    opacity: 0;
+    cursor: pointer;
+    padding-right: 10px;
+    transition: 50ms ease-in-out;
+
+    font-size: 30px;
+}
+
+.question-item:hover .delete-icon {
+    opacity: 1;
+    /* border-right: 2px solid rgba(52, 52, 52, 0.426); */
+    height: 30px;
+}
+
+.boxinput {
+    width: 350px;
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+.custom-radio {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+
+.custom-radio-item {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 7px;
+    cursor: pointer;
+    padding-block: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    flex-direction: column;
+}
+
+.custom-radio-item:hover, .custom-radio-item.selected {
+    color: rgba(0, 0, 0, 0.832);
+    background-color: #8ec7ff7a;
+}
+
+textarea {
+    box-shadow: rgba(0, 0, 0, 0) 0px 0.0750em 0.0750em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.2em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    font-weight: 600;
+    color: #C3C3C3;
+    border: 2px solid rgb(124, 185, 255);
+    border-radius: 10px;
+}
+
+
+
+/* Estilo para ocultar os botões inicialmente */
+.option-buttons {
+    opacity: 0;
+    transition: 50ms ease-in-out;
+}
+
+/* Estilo para mostrar os botões quando o mouse passa sobre a div */
+    .option-container:hover .option-buttons {
+    opacity: 1;
+}
+
+/* Estilo base para o texto explicativo */
+.custom-radio-item .description {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    color: #555;
+    font-size: 14px;
+    margin-top: 5px;
+    position: relative;
+}
+
+/* Quando o mouse está sobre o item, o texto aparece */
+.custom-radio-item:hover .description {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Seu CSS existente... */
+
+/* Estilos para o contêiner do conteúdo do modal */
+.modal-content-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  /* Coluna das opções */
+  .options-column {
+    flex: 1;
+  }
+  
+  /* Linha vertical separadora */
+  .vertical-line {
+    width: 1px;
+    background-color: #ddd;
+    margin: 0 10px;
+  }
+  
+  /* Coluna das descrições */
+  .description-column {
+    flex: 1;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Estilo para o texto da descrição */
+  .description-column p {
+    color: #555;
+    font-size: 16px;
+  }
+  
+  /* Estilos para os itens */
+  .custom-radio-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .custom-radio-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Outros estilos existentes... */
+  
