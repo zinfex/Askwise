@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import MainLayout from "../../MainLayout";
 import './index.css';
 import { Button, Modal, Form, Spinner } from "react-bootstrap";
@@ -11,8 +11,7 @@ import { CiCircleRemove } from "react-icons/ci";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { PiPaintBrushHouseholdFill } from "react-icons/pi";
 import { AiOutlineCarryOut } from "react-icons/ai";
-
-
+import PesquisaContext from "../../contexts/PesquisasContext";
 
 const CreatePage = () => {
     const [hoveredOption, setHoveredOption] = useState(null);
@@ -22,14 +21,13 @@ const CreatePage = () => {
     const [options, setOptions] = useState(['']);
     const [starCount, setStarCount] = useState(3);
     const [loading, setLoading] = useState(false);
+    const { pesquisas, setPesquisas } = useContext(PesquisaContext)
 
     const [surveyTitle, setSurveyTitle] = useState('');
     const [surveyDescription, setSurveyDescription] = useState('');
-    const [selectedColor, setSelectedColor] = useState('#000000'); // Estado para a cor selecionada
 
     const handleSurveyTitleChange = (event) => setSurveyTitle(event.target.value);
     const handleSurveyDescriptionChange = (event) => setSurveyDescription(event.target.value);
-    const handleColorChange = (event) => setSelectedColor(event.target.value); // Função para atualizar a cor
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => {
@@ -105,7 +103,6 @@ const CreatePage = () => {
         newQuestions[questionIndex].options = newQuestions[questionIndex].options.filter((_, i) => i !== optionIndex);
         setQuestions(newQuestions);
     };
-
     const handleStarCountChange = (questionIndex, event) => {
         const value = parseInt(event.target.value, 10);
         if (value >= 3 && value <= 10) {
@@ -116,12 +113,61 @@ const CreatePage = () => {
     };
 
     const handlePublish = async () => {
-        setLoading(true);
-
-       //ir para a ela do formulario
-
-        setLoading(false);
+      try {
+        const hash_id = generateHashId();
+    
+        // Monta objeto principal da pesquisa
+        const surveyObject = {
+          nome: surveyTitle,
+          descricao: surveyDescription,
+          hash_id,
+          questoes: []
+        };
+    
+        // Percorre cada pergunta para criar a estrutura de dados
+        for (const question of questions) {
+          let questionPayload = {
+            texto_pergunta: question.title,
+            type: question.type,
+            placeholder: '',
+            options: '',
+            hash_id,
+          };
+    
+          if (question.type === 'resposta_curta' || question.type === 'resposta_longa') {
+            questionPayload.placeholder = question.value;
+          } else if (question.type === 'unica_escolha' || question.type === 'multipla_escolha') {
+            questionPayload.options = question.options.map(option => `"${option}"`).join(', ');
+          } else if (question.type === 'avaliacao') {
+            questionPayload.placeholder = question.stars; // Número de estrelas da pergunta de avaliação
+          }
+    
+          // Adiciona cada questionPayload no array "questoes" do objeto principal
+          surveyObject.questoes.push(questionPayload);
+        }
+    
+        // Agora você tem um único objeto que engloba tudo:
+        // {
+        //   nome,
+        //   descricao,
+        //   hash_id,
+        //   questoes: [... questionPayloads ...]
+        // }
+    
+        // Salva no seu contexto (se quiser armazenar mais de uma pesquisa no array)
+        // Exemplo: setPesquisas(prev => [...prev, surveyObject]);
+        console.log(surveyObject)
+        setPesquisas(surveyObject);
+    
+        // Redireciona para a rota do Form
+        window.location.href = `/form/${hash_id}`;
+        
+      } catch (error) {
+        console.log(error);
+        window.location.href = '/pesquisas';
+      }
     };
+    
 
     const getDescriptionContent = (option) => {
         switch (option) {
@@ -146,7 +192,7 @@ const CreatePage = () => {
         <MainLayout>
             <header style={{ display: 'flex', justifyContent: 'space-between',}}>
                 <div>Minhas pesquisas <CgChevronRight /> Nova pesquisa</div>
-                {loading ? <Spinner animation="border" variant="primary" /> : <Button className="p-1" onClick={handlePublish}>Publicar</Button>}
+                {loading ? <Spinner animation="border" variant="primary" /> : <Button className="p-1" onClick={handlePublish}>CRIAR</Button>}
             </header>
 
             <div className="infoedit">
@@ -290,16 +336,7 @@ const CreatePage = () => {
               <Form>
                 <Form.Group>
                   <div className="custom-radio">
-                    <div
-                      className="custom-radio-item"
-                      style={{ color: '#2A61C1' }}
-                      onMouseEnter={() => setHoveredOption('Novo tópico')}
-                      onMouseLeave={() => setHoveredOption(null)}
-                    >
-                      <div>
-                        <AiOutlineCarryOut /> Novo tópico
-                      </div>
-                    </div>
+                  
                     <div
                       onClick={() => handleAddQuestion('resposta_curta')}
                       className="custom-radio-item"

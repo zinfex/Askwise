@@ -11,8 +11,6 @@ import { CiCircleRemove } from "react-icons/ci";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { AiOutlineCarryOut } from "react-icons/ai";
 
-import Api from "../../config/Api";
-
 const EditPage = ({ surveyId }) => {
     const [hoveredOption, setHoveredOption] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -29,7 +27,7 @@ const EditPage = ({ surveyId }) => {
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
-                const surveyResponse = await Api.get(`/_pesquisasGet?idPesquisa=${surveyId}`);
+                // const surveyResponse = await Api.get(`/_pesquisasGet?idPesquisa=${surveyId}`);
                 const surveyData = surveyResponse.data[0];
                 setSurveyTitle(surveyData.nome);
                 setSurveyDescription(surveyData.descricao);
@@ -138,12 +136,12 @@ const EditPage = ({ surveyId }) => {
         setLoading(true);
 
         try {
-            await Api.put(`/_pesquisas/${surveyId}`, {
-                nome: surveyTitle,
-                descricao: surveyDescription,
-                date: new Date().toISOString(),
-                cor: selectedColor,
-            });
+            // await Api.put(`/_pesquisas/${surveyId}`, {
+            //     nome: surveyTitle,
+            //     descricao: surveyDescription,
+            //     date: new Date().toISOString(),
+            //     cor: selectedColor,
+            // });
 
             // Atualizar ou criar perguntas
             for (const question of questions) {
@@ -166,10 +164,10 @@ const EditPage = ({ surveyId }) => {
 
                 if (question.id) {
                     // Atualizar pergunta existente
-                    await Api.put(`/_questions/${question.id}`, questionPayload);
+                    // await Api.put(`/_questions/${question.id}`, questionPayload);
                 } else {
                     // Criar nova pergunta
-                    await Api.post('/_questions', questionPayload);
+                    // await Api.post('/_questions', questionPayload);
                 }
             }
 

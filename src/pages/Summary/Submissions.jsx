@@ -5,7 +5,6 @@ import { IoIosStar } from "react-icons/io";
 import { MdCheckBoxOutlineBlank, MdOutlineShortText } from 'react-icons/md';
 import { Modal, Button } from 'react-bootstrap';
 import { FaRegCircle } from "react-icons/fa6";
-import Api from '../../config/Api';
 
 export function Submissions({ hash_id, respostas, perguntas }) {
   if (!respostas || respostas.length === 0) {
@@ -108,14 +107,14 @@ export function Submissions({ hash_id, respostas, perguntas }) {
       try {
         const idRespostas = Object.values(submission.respostas).map(resposta => resposta.idResposta);
 
-        const deletePromises = idRespostas.map(idResposta =>
-          Api.delete('/_resp', {
-            data: {
-              idresposta: idResposta,
-              idPesquisa: hash_id,
-            },
-          })
-        );
+        // const deletePromises = idRespostas.map(idResposta =>
+        //   Api.delete('/_resp', {
+        //     data: {
+        //       idresposta: idResposta,
+        //       idPesquisa: hash_id,
+        //     },
+        //   })
+        // );
 
         await Promise.all(deletePromises);
       } catch (error) {

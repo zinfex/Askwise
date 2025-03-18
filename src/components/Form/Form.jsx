@@ -8,41 +8,60 @@ import ProgressDots from './ProgressDots';
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import './Index.css';
 import '../../styles/Responsive.css';
-import Api from '../../config/Api';
 import { GrFormNextLink } from "react-icons/gr";
 
-const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }) => {
+/**
+ * Esperamos receber em props:
+ * survey = {
+ *   nome: string,
+ *   descricao: string,
+ *   hash_id: string,
+ *   questoes: [
+ *     { texto_pergunta, type, placeholder, options, hash_id }, ...
+ *   ]
+ * }
+ * 
+ * className, idPesquisa (se necessário)
+ */
+const FormQuestions = ({ survey, className, idPesquisa }) => {
+  // Se o survey não estiver definido, tratamos como objeto vazio.
+  // Assim não quebramos o código caso venha undefined.
+  const {
+    nome = '',
+    descricao = '',
+    hash_id = '',
+    questoes = []
+  } = survey || {};
+
+  // Estados internos
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [currentTopicId, setCurrentTopicId] = useState(questions[0]?.topico || null);
   const [end, setEnd] = useState(false);
   const [showEndBonus, setShowEndBonus] = useState(false);
-  const [skipTopicIntro, setSkipTopicIntro] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [shake, setShake] = useState(false);
   const [direction, setDirection] = useState('forward');
-  const [showTopicIntro, setShowTopicIntro] = useState(true);
   const [tempAnswers, setTempAnswers] = useState([]);
-  
-  const filteredQuestions = questions.filter(q => q.topico === currentTopicId);
-  const totalQuestions = questions.length;
-  const topicQuestionCount = filteredQuestions.length;
 
+  const totalQuestions = questoes.length;
   const user_id = localStorage.getItem('user_id');
 
-  // Mova a declaração de currentQuestion para antes do useEffect
-  const currentQuestion = filteredQuestions[currentQuestionIndex];
-  const currentTopicName = topics[currentTopicId];
+  // A pergunta atual
+  const currentQuestion = questoes[currentQuestionIndex];
 
-  // Atualize currentAnswer corretamente quando currentQuestion muda
+  // Quando a pergunta mudar, resetamos (ou ajustamos) a resposta atual
   useEffect(() => {
-    if (currentQuestion?.type.value === 'multipla_escolha') {
+    if (!currentQuestion) return;
+    
+    // Se for multipla escolha, definimos um array vazio.
+    if (currentQuestion.type === 'multipla_escolha') {
       setCurrentAnswer([]);
     } else {
       setCurrentAnswer('');
     }
   }, [currentQuestion]);
 
+  // Se o usuário sair da página antes de terminar, faz algo? 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (!end) {
@@ -50,33 +69,25 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
         event.returnValue = '';
       }
     };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
-
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [end]);
 
+  // Lógica avançar
   const handleNext = () => {
-    const isMultiChoice = currentQuestion.type.value === 'multipla_escolha';
+    if (!currentQuestion) return;
+
+    const isMultiChoice = currentQuestion.type === 'multipla_escolha';
     const isAnswerEmpty = isMultiChoice
       ? currentAnswer.length === 0
       : currentAnswer.trim() === '';
 
-    if (isAnswerEmpty && !showTopicIntro) {
+    if (isAnswerEmpty) {
       setShake(true);
       setTimeout(() => setShake(false), 700);
       return;
-    }
-
-    if (showTopicIntro) {
-      if (skipTopicIntro) {
-        setShowTopicIntro(false);
-      } else {
-        setShowTopicIntro(false);
-        return;
-      }
     }
 
     const newAnswer = {
@@ -84,88 +95,49 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
         ? currentAnswer.join(', ')
         : currentAnswer,
       user_id,
-      hash_id: idPesquisa,
-      idPergunta: filteredQuestions[currentQuestionIndex].id,
-      titulo_pergunta: filteredQuestions[currentQuestionIndex].texto_pergunta,
-      tipo_pergunta: currentQuestion.type.value,
+      hash_id: hash_id,              // do survey
+      idPergunta: `${currentQuestionIndex}`,  // se quiser um id único
+      titulo_pergunta: currentQuestion.texto_pergunta,
+      tipo_pergunta: currentQuestion.type,
     };
 
-    setTempAnswers(prevTempAnswers => {
+    // Guardamos temporariamente
+    setTempAnswers((prevTempAnswers) => {
       const updatedAnswers = [...prevTempAnswers];
       updatedAnswers[currentQuestionIndex] = newAnswer;
       return updatedAnswers;
     });
 
-    if (currentQuestionIndex < filteredQuestions.length - 1) {
+    // Se não for a última pergunta, vai para a próxima
+    if (currentQuestionIndex < totalQuestions - 1) {
       setDirection('forward');
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setCurrentAnswer('');
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      const topicIds = Object.keys(topics);
-      const currentTopicIndex = topicIds.indexOf(currentTopicId);
-      const nextTopicIndex = currentTopicIndex + 1;
-
-      setAnswers(prevAnswers => [...prevAnswers, ...tempAnswers, newAnswer]);
-
-      if (nextTopicIndex < topicIds.length) {
-        const nextTopicId = topicIds[nextTopicIndex];
-
-        if (nextTopicIndex === topicIds.length - 1) {
-          setShowEndBonus(true);
-          setSkipTopicIntro(true);
-
-          sendAnswers([...tempAnswers, newAnswer]);
-
-          setTempAnswers([]);
-          setCurrentTopicId(nextTopicId);
-          setCurrentQuestionIndex(0);
-          setCurrentAnswer('');
-        } else {
-          sendAnswers([...tempAnswers, newAnswer]);
-
-          setTempAnswers([]);
-          setCurrentTopicId(nextTopicId);
-          setCurrentQuestionIndex(0);
-          setCurrentAnswer('');
-          setShowTopicIntro(true);
-        }
-      } else {
-        setEnd(true);
-
-        sendAnswers([...tempAnswers, newAnswer]);
-      }
+      // Se for a última, marcamos fim ou chamamos algo
+      setEnd(true);
+      // Você pode chamar 'sendAnswers(tempAnswers)' aqui, etc.
     }
   };
 
+  // Lógica voltar
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setDirection('backward');
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setCurrentQuestionIndex((prev) => prev - 1);
+
+      // Restaurar resposta anterior
       const previousAnswer = tempAnswers[currentQuestionIndex - 1]?.resposta;
       setCurrentAnswer(Array.isArray(previousAnswer) ? previousAnswer : previousAnswer || '');
     }
   };
 
+  // Só para exemplificar como você pode enviar as respostas
   const sendAnswers = async (answersToSend) => {
     try {
-      await Api.post(apiEndpoint, answersToSend);
+      // Chamada de API, etc.
     } catch (error) {
       console.log('Erro ao enviar respostas:', error);
     }
-  };
-
-  useEffect(() => {
-    if (showTopicIntro && !skipTopicIntro) {
-      const timer = setTimeout(() => {
-        handleNext();
-      }, 3000); 
-      return () => clearTimeout(timer);
-    }
-  }, [showTopicIntro, skipTopicIntro]);
-
-  const handleEndBonusContinue = () => {
-    setShowEndBonus(false);
-    setShowTopicIntro(false);
   };
 
   const handleChange = (e) => {
@@ -173,10 +145,10 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
   };
 
   const handleOptionSelect = (option) => {
-    if (currentQuestion.type.value === 'multipla_escolha') {
-      setCurrentAnswer(prevAnswer => {
+    if (currentQuestion.type === 'multipla_escolha') {
+      setCurrentAnswer((prevAnswer) => {
         if (prevAnswer.includes(option)) {
-          return prevAnswer.filter(item => item !== option);
+          return prevAnswer.filter((item) => item !== option);
         } else {
           return [...prevAnswer, option];
         }
@@ -196,15 +168,14 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
     setCurrentAnswer(rating.toString());
   };
 
-  const currentQuestionGlobalIndex = questions.findIndex(
-    q => q.id === currentQuestion?.id
-  );
-  const progress = ((currentQuestionGlobalIndex + 1) / totalQuestions) * 100;
+  // Cálculo de progresso
+  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
 
+  // Renderiza o input de acordo com o tipo
   const renderInput = () => {
     if (!currentQuestion) return null;
 
-    switch (currentQuestion.type.value) {
+    switch (currentQuestion.type) {
       case 'resposta_longa':
         return (
           <textarea
@@ -216,8 +187,6 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
             maxLength={200}
           />
         );
-      case 'email':
-      case 'number':
       case 'resposta_curta':
         return (
           <input
@@ -230,35 +199,19 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
             maxLength={60}
           />
         );
-      case 'Texto':
-        return (
-          <div>
-            <input
-              type={currentQuestion.type.value}
-              placeholder={currentQuestion.placeholder}
-              className='input'
-              value={currentAnswer}
-              onChange={handleChange}
-              onKeyPress={handleKeyPress}
-              maxLength={200}
-            />
-            <div className="char-counter">
-              {currentAnswer.length}/200 caracteres
-            </div>
-          </div>
-        );
       case 'avaliacao':
-        const stars = parseInt(currentQuestion.placeholder);
+        // Aqui o placeholder contém o número de estrelas
+        const stars = parseInt(currentQuestion.placeholder, 10) || 3;
         return (
           <div className="star-rating">
-            {[...Array(stars)].map((star, index) => {
-              index += 1;
+            {[...Array(stars)].map((_, index) => {
+              const starNum = index + 1;
               return (
                 <button
                   type="button"
-                  key={index}
-                  className={index <= currentAnswer ? "on" : "off"}
-                  onClick={() => handleStarSelect(index)}
+                  key={starNum}
+                  className={starNum <= currentAnswer ? "on" : "off"}
+                  onClick={() => handleStarSelect(starNum)}
                 >
                   <MdOutlineStarPurple500 size={40} />
                 </button>
@@ -266,11 +219,17 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
             })}
           </div>
         );
-      case 'Score':
       case 'multipla_escolha':
+      case 'Score': // se "Score" for algo parecido
+        // Aqui options é uma string com "Opção1", "Opção2"?
+        // Você pode splitar ou já converter isso antes
+        // Exemplo: se vier "Opção1, Opção2"
+        const multiOptions = currentQuestion.options
+          .split(',')
+          .map((opt) => opt.replaceAll('"', '').trim());
         return (
           <div className="options-container">
-            {currentQuestion.options.map((option, index) => (
+            {multiOptions.map((option, index) => (
               <div
                 key={index}
                 className={`option-box ${currentAnswer.includes(option) ? 'selected' : ''}`}
@@ -282,9 +241,13 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
           </div>
         );
       case 'unica_escolha':
+        // Idem, se "options" for string, converta
+        const singleOptions = currentQuestion.options
+          .split(',')
+          .map((opt) => opt.replaceAll('"', '').trim());
         return (
           <div className="options-container">
-            {currentQuestion.options.map((option, index) => (
+            {singleOptions.map((option, index) => (
               <div
                 key={index}
                 className={`option-box ${currentAnswer === option ? 'selected' : ''}`}
@@ -296,18 +259,31 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
           </div>
         );
       default:
-        return null;
+        // Caso queira tratar "email", "number", etc.
+        return (
+          <input
+            type="text"
+            placeholder={currentQuestion.placeholder}
+            className='input'
+            value={currentAnswer}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+          />
+        );
     }
   };
 
-  if (!questions || questions.length === 0) {
-    return <Spinner animation="border" variant="info" className='loading' />;
-  }
+  // Se ainda não tem questoes ou está vazio
 
   return (
     <div className={`containe ${className}`}>
+      {/* Exemplo de exibir título/descrição da pesquisa */}
+      <h2>{nome}</h2>
+      <p>{descricao}</p>
+
       <ProgressBar variant="info" now={progress} className="progressbar" />
-      {!end && !showEndBonus && !showTopicIntro && topicQuestionCount > 1 && (
+
+      {!end && !showEndBonus && (
         <div className="buttons">
           {currentQuestionIndex > 0 && (
             <button onClick={handlePrevious}>
@@ -319,48 +295,41 @@ const FormQuestions = ({ questions, topics, apiEndpoint, className, idPesquisa }
           </button>
         </div>
       )}
-      {!end && !showTopicIntro && <h2 className='topic-name'>{currentTopicName}</h2>}
 
       <div className="form">
         {end ? (
-          <End pesquisa={idPesquisa}/>
+          // Quando acaba
+          <End pesquisa={idPesquisa} />
         ) : showEndBonus ? (
           <EndBonus onContinue={handleEndBonusContinue} />
         ) : (
           <TransitionGroup>
-            {showTopicIntro ? (
-              !skipTopicIntro && (
-                <CSSTransition
-                  key={currentTopicId}
-                  timeout={600}
-                  classNames="fade"
-                >
-                  <span className='presentation'>{currentTopicName}</span>
-                </CSSTransition>
-              )
-            ) : (
-              <CSSTransition
-                key={currentQuestion?.id}
-                timeout={500}
-                classNames={direction === 'forward' ? 'slide' : 'slide-back'}
-              >
-                <div className={`question-container ${shake ? 'shake' : ''}`}>
-                  {filteredQuestions.length > 1 && (
-                    <ProgressDots currentIndex={currentQuestionIndex} totalSteps={filteredQuestions.length} />
-                  )}
-                  
-                  <Form.Group className="mb-3" controlId={`formBasic${currentQuestion?.id}`}>
-                    <Form.Label className='mb-4 pb-3' style={{ fontSize: 24, borderBottom: '2px solid' }}>
-                      {currentQuestion?.texto_pergunta}
-                    </Form.Label>
-                    {renderInput()}
-                  </Form.Group>
-                  <button className='button' onClick={handleNext}>
-                    Próximo <GrFormNextLink fontSize={25} />
-                  </button>
-                </div>
-              </CSSTransition>
-            )}
+            <CSSTransition
+              key={currentQuestionIndex}
+              timeout={500}
+              classNames={direction === 'forward' ? 'slide' : 'slide-back'}
+            >
+              <div className={`question-container ${shake ? 'shake' : ''}`}>
+                {/* Exemplo: dots de progresso */}
+                {questoes.length > 1 && (
+                  <ProgressDots
+                    currentIndex={currentQuestionIndex}
+                    totalSteps={questoes.length}
+                  />
+                )}
+
+                <Form.Group className="mb-3" controlId={`formBasic${currentQuestionIndex}`}>
+                  <Form.Label className='mb-4 pb-3' style={{ fontSize: 24, borderBottom: '2px solid' }}>
+                    {currentQuestion?.texto_pergunta}
+                  </Form.Label>
+                  {renderInput()}
+                </Form.Group>
+                
+                <button className='button' onClick={handleNext}>
+                  Próximo <GrFormNextLink fontSize={25} />
+                </button>
+              </div>
+            </CSSTransition>
           </TransitionGroup>
         )}
       </div>

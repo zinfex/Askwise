@@ -29,12 +29,12 @@ const App = () => {
             <Route path='*' element={<Signup/>} />
             <Route path="/login" element={<SignIn />} />
             <Route path="/pesquisa/summary/:idPesquisa" element={<Answers />} />
+            <Route path="/pesquisas/create" element={<Private Item={CreatePage} />} />
             <Route path="/form/:idPesquisa" element={<FormPage />} />
             <Route path="/pesquisas" element={<Private Item={Admin} />} />
             <Route path="/home" element={<Private Item={Admin} />} />
             <Route path="/dashboard" element={<Private Item={DashboardPage} />} />
             <Route path="/inbox" element={<Private Item={Inbox} />} />
-            <Route path="/pesquisas/create" element={<Private Item={CreatePage} />} />
             <Route path="/pesquisas/edit/:id" element={<Private Item={EditPage} />}/>
           </Routes>
         </Router>

@@ -1,11 +1,11 @@
 import React from 'react';
 import Sidebar from './components/Admin/Sidebar';
 import { Container, Row, Col } from 'react-bootstrap';
-import { PesquisaProvider } from './contexts/PesquisasContext';
+
 
 const MainLayout = ({ children }) => {
   return (
-    <PesquisaProvider>
+    
       <Container fluid>
         <Row>
           <Col xs={2}>
@@ -16,7 +16,7 @@ const MainLayout = ({ children }) => {
           </Col>
         </Row>
       </Container>
-    </PesquisaProvider>
+
   );
 };
 

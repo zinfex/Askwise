@@ -2,7 +2,6 @@ import MainLayout from "../../MainLayout";
 import { HiInboxArrowDown } from "react-icons/hi2";
 import './Index.css'
 import { useEffect, useState } from "react";
-import Api from "../../config/Api";
 
 function Inbox() {
     const [messages, setMessages] = useState([])
