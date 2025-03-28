@@ -3,7 +3,6 @@ import { Form, Spinner, ProgressBar } from 'react-bootstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { AiOutlineCaretRight, AiOutlineCaretLeft } from "react-icons/ai";
 import End from './End';
-import EndBonus from './EndBonus';
 import ProgressDots from './ProgressDots';
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import './Index.css';
@@ -36,7 +35,6 @@ const FormQuestions = ({ survey, className, idPesquisa }) => {
   // Estados internos
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [end, setEnd] = useState(false);
-  const [showEndBonus, setShowEndBonus] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [shake, setShake] = useState(false);
@@ -278,12 +276,12 @@ const FormQuestions = ({ survey, className, idPesquisa }) => {
   return (
     <div className={`containe ${className}`}>
       {/* Exemplo de exibir título/descrição da pesquisa */}
-      <h2>{nome}</h2>
-      <p>{descricao}</p>
+      {/* <h2>{nome}</h2> */}
+      {/* <p>{descricao}</p> */}
 
       <ProgressBar variant="info" now={progress} className="progressbar" />
 
-      {!end && !showEndBonus && (
+      {!end && (
         <div className="buttons">
           {currentQuestionIndex > 0 && (
             <button onClick={handlePrevious}>
@@ -300,8 +298,6 @@ const FormQuestions = ({ survey, className, idPesquisa }) => {
         {end ? (
           // Quando acaba
           <End pesquisa={idPesquisa} />
-        ) : showEndBonus ? (
-          <EndBonus onContinue={handleEndBonusContinue} />
         ) : (
           <TransitionGroup>
             <CSSTransition

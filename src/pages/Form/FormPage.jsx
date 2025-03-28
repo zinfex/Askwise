@@ -4,33 +4,34 @@ import { Spinner } from 'react-bootstrap';
 import FormQuestions from '../../components/Form/Form';
 import End from '../../components/Form/End';
 import '../../components/Form/Index.css';
-import PesquisaContext from '../../contexts/PesquisasContext';
+import db from '../../db';
+// import PesquisaContext from '../..';
 
 const FormPage = () => {
   const { idPesquisa } = useParams();
   // const [loading, setLoading] = useState(true);
   // const { pesquisas } = useContext(PesquisaContext)
-  const pesquisas = useState({
-    "nome": "Título da Pesquisa",
-    "descricao": "Descrição da pesquisa",
-    "hash_id": "ABC123",
-    "questoes": [
-      {
-        "texto_pergunta": "Pergunta 1",
-        "type": "resposta_curta",
-        "placeholder": "Valor curto",
-        "options": "",
-        "hash_id": "ABC124"
-      },
-      {
-        "texto_pergunta": "Pergunta 2",
-        "type": "unica_escolha",
-        "placeholder": "",
-        "options": "\"Opção1\", \"Opção2\"",
-        "hash_id": "ABC125"
-      },
-    ]
-  })
+  const [pesquisas, setPesquisa] = useState()
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Buscamos a pesquisa com esse hash_id
+        // Dexie permite várias consultas. Por ex.: db.pesquisas.where("hash_id").equals(idPesquisa).first()
+        const found = await db.pesquisas.where("hash_id").equals(idPesquisa).first();
+
+        if (found) {
+          setPesquisa(found);
+        } else {
+          console.log("Não encontrou pesquisa com esse hash_id");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar no IndexedDB:", error);
+      }
+    }
+
+    fetchData();
+  }, [idPesquisa]);
 
   console.log(pesquisas)
 

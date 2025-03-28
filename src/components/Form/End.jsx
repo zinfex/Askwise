@@ -19,7 +19,7 @@ const End = ({ pesquisa }) => {
             <Form.Label className='end-text' >
 
 
-              <b style={{width: '100%'}}>Feito com Criador de formularios, o jeito mais fácil de criar formulários</b> <br/>
+              <b style={{width: '100%'}}>Feito com Simples Forms, o jeito mais fácil de criar formulários</b> <br/>
 
               <Link to={'/'} ><button className='endbutton'><IoCloud /> Crie seu próprio formulário</button></Link>
             </Form.Label>

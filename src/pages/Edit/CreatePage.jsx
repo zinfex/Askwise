@@ -12,8 +12,12 @@ import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { PiPaintBrushHouseholdFill } from "react-icons/pi";
 import { AiOutlineCarryOut } from "react-icons/ai";
 import PesquisaContext from "../../contexts/PesquisasContext";
+import { useNavigate } from "react-router-dom";
+import db from "../../db";
 
 const CreatePage = () => {
+    const navigate = useNavigate();
+
     const [hoveredOption, setHoveredOption] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [questions, setQuestions] = useState([]);
@@ -146,21 +150,14 @@ const CreatePage = () => {
           surveyObject.questoes.push(questionPayload);
         }
     
-        // Agora você tem um único objeto que engloba tudo:
-        // {
-        //   nome,
-        //   descricao,
-        //   hash_id,
-        //   questoes: [... questionPayloads ...]
-        // }
-    
-        // Salva no seu contexto (se quiser armazenar mais de uma pesquisa no array)
-        // Exemplo: setPesquisas(prev => [...prev, surveyObject]);
+
         console.log(surveyObject)
         setPesquisas(surveyObject);
-    
+
+        await db.pesquisas.add(surveyObject);
+  
         // Redireciona para a rota do Form
-        window.location.href = `/form/${hash_id}`;
+        navigate(`/form/${hash_id}`);
         
       } catch (error) {
         console.log(error);

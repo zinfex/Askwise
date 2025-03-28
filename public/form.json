@@ -1,0 +1,22 @@
+{
+    "nome": "Título da Pesquisa",
+    "descricao": "Descrição da pesquisa",
+    "hash_id": "ABC123",
+    "questoes": [
+      {
+        "texto_pergunta": "Pergunta 1",
+        "type": "resposta_curta",
+        "placeholder": "Valor curto",
+        "options": "",
+        "hash_id": "ABC124"
+      },
+      {
+        "texto_pergunta": "Pergunta 2",
+        "type": "unica_escolha",
+        "placeholder": "",
+        "options": "\"Opção1\", \"Opção2\"",
+        "hash_id": "ABC125"
+      }
+    ]
+  }
+  
