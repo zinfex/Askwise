@@ -1,4 +1,4 @@
-# Documentação – Projeto com React e IndexedDB
+# Simple-Forms
 
 Este projeto implementa um **sistema de criação e exibição de formulários** (ou pesquisas) em **React**, utilizando **IndexedDB** para armazenamento local dos dados. A escolha do IndexedDB permite salvar quantidades maiores de informação, manter dados offline e evitar a perda quando a página é atualizada.
 
@@ -13,8 +13,6 @@ Este projeto implementa um **sistema de criação e exibição de formulários**
 5. [Estrutura do Código](#estrutura-do-código)  
 6. [Exemplo de Fluxo](#exemplo-de-fluxo)  
 7. [Personalizações Possíveis](#personalizações-possíveis)  
-8. [Contribuições](#contribuições)  
-9. [Licença](#licença)  
 
 ---
 
@@ -64,3 +62,9 @@ Este projeto oferece:
    ```bash
    git clone https://github.com/seu-usuario/seu-repo.git
    cd seu-repo
+2. **Instalar** dependências:
+   ```bash
+   npm i
+3. **Rodar** projeto:
+   ```bash
+   npm run dev
