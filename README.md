@@ -60,8 +60,8 @@ Este projeto oferece:
 
 1. **Clonar** o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repo.git
-   cd seu-repo
+   git clone https://github.com/zinfex/simple-forms.git
+   cd simple-forms
 2. **Instalar** dependências:
    ```bash
    npm i
