@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+  import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Admin from './components/Admin/Admin';
 import FormPage from './pages/Form/FormPage';
@@ -16,7 +16,8 @@ import Answers from './pages/Summary/Answers';
 
 const Private = ({ Item }) => {
   const { signed } = useAuth()
-  return signed > 0 ? <Item /> : <SignIn />;
+  // return signed > 0 ? <Item /> : <SignIn />;
+  return <Item /> 
 }
 
 const App = () => {
