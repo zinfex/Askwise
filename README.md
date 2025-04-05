@@ -1,4 +1,4 @@
-# Simple-Forms
+# Askwise
 
 Este projeto implementa um **sistema de criação e exibição de formulários** (ou pesquisas) em **React**, utilizando **IndexedDB** para armazenamento local dos dados. A escolha do IndexedDB permite salvar quantidades maiores de informação, manter dados offline e evitar a perda quando a página é atualizada.
 
